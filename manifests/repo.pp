@@ -13,7 +13,7 @@
 
 class kamailio::repo inherits kamailio {
   case $::osfamily {
-    'Debian': {
+    'Debian', 'Ubuntu': {
       class { 'kamailio::repo::apt': }
     }
     default: {

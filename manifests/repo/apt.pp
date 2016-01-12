@@ -14,15 +14,21 @@
 class kamailio::repo::apt inherits kamailio::repo {
   include '::apt'
 
-  apt::source { 'kamailio_wheezy':
+  apt::source { 'kamailio_stable':
     location          => 'http://deb.kamailio.org/kamailio',
+    comment           => 'Sipwise Team provides a Kamailio DEB repository for Debian and Ubuntu distributions. See http://www.kamailio.org/wiki/packages/debs',
     release           => $::lsbdistcodename,
     repos             => 'main',
-    required_packages => 'debian-keyring debian-archive-keyring',
-    key               => '07D5C01D',
-    key_source        => 'http://deb.kamailio.org/kamailiodebkey.gpg',
-    include_src       => true,
+    key               => {
+      'id'     => '0xfb40d3e6508ea4c8',
+      'server' => 'keyserver.ubuntu.com',
+      'source' => 'http://deb.kamailio.org/kamailiodebkey.gpg',
+    },
+    include           => {
+      'deb' => true,
+      'src' => true,
+    },
   }
 
-  Apt::Source['kamailio_wheezy'] -> Package<|tag == 'kamailio'|>
+  Apt::Source['kamailio_stable'] -> Package<|tag == 'kamailio'|>
 }
